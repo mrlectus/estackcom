@@ -1,0 +1,1 @@
+ALTER TABLE `cart` ADD `seller_id` text NOT NULL REFERENCES user(id);

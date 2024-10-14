@@ -1,0 +1,73 @@
+import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import { to } from "await-to-ts";
+import { db } from "@/migrate";
+import { userTable } from "@/app/drizzle/schema";
+import { eq } from "drizzle-orm";
+import { lucia } from "@/app/lib/lucia";
+import { cookies } from "next/headers";
+import { userSchema } from "@/app/types/schema";
+
+export const POST = async (request: NextRequest) => {
+  let err, user, hashedPassword;
+  [err, user] = await to(request.json());
+  const validUser = userSchema.safeParse(user);
+  if (!validUser.success) {
+    return NextResponse.json({ error: "Invalid user data" }, { status: 400 });
+  }
+  [err, user] = await to(
+    db.query.userTable.findFirst({
+      where: eq(userTable.username, validUser.data.username),
+    }),
+  );
+  if (err) {
+    console.log(err);
+    return NextResponse.json(
+      { error: "Error querying database" },
+      { status: 500 },
+    );
+  }
+  if (user) {
+    return NextResponse.json(
+      { error: "User with that username already exists" },
+      { status: 400 },
+    );
+  }
+  // eslint-disable-next-line prefer-const
+  [err, hashedPassword] = await to(bcrypt.hash(validUser.data.password, 10));
+  if (err) {
+    console.log(err);
+    return NextResponse.json(
+      { error: "Error hashing password" },
+      { status: 500 },
+    );
+  }
+  [err, user] = await to(
+    db
+      .insert(userTable)
+      .values({
+        username: validUser.data.username,
+        email: validUser.data.email,
+        password: hashedPassword,
+        role: validUser.data.role,
+      })
+      .returning({ id: userTable.id }),
+  );
+  if (user) {
+    const session = await lucia.createSession(user[0].id, {});
+    const sessionCookie = lucia.createSessionCookie(session.id);
+    cookies().set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes,
+    );
+    return NextResponse.json({
+      message: "Account registration succcessful",
+      role: validUser.data.role,
+    });
+  }
+  return NextResponse.json(
+    { message: "Something went wrong" },
+    { status: 500 },
+  );
+};

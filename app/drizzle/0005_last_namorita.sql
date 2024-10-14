@@ -1,0 +1,1 @@
+ALTER TABLE `order` ADD `quantity` integer NOT NULL;
