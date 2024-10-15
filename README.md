@@ -2,6 +2,10 @@
 
 Your eCommerce webapp that uses redux for state and async state mamagement!
 
+
+https://github.com/user-attachments/assets/08c0bb40-411c-4e6d-850b-d93d33f53390
+
+
 ## Project Setup
 
 ### Environment Variables
