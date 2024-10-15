@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ESTACKCOM
 
-## Getting Started
+Your eCommerce webapp that uses redux for state and async state mamagement!
 
-First, run the development server:
+## Project Setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Environment Variables
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This project uses some environment variable that we have to setup for the app to function properly.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Copy the .env.example to .env and then change this variable to the correct value
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+    - **BLOB_READ_WRITE_TOKEN=""** This variable is gotten from vercel [blobToken](https://vercel.com). Signup to vercel and go to the storage
+      tab. Then click on create database, and then select Blob (Fast Object storage). And environemnt variable would be provided for you.
+      copy it to BLOB_READ_WRITE_TOKEN="<env variable you got>"
 
-## Learn More
+    - **TURSO_DATABASE_URL=""** & **TURSO_AUTH_TOKEN=""** This variable is gotton from turso [turso](https://app.turso.tech). Visit the link and
+      signup to turso. Create a Group and then create a database. after doing that. Go to the database section under group and copy the
+      **TURSO_DATABASE_URL**, it looks something like `libsql://<url>.turos.io` Then click on the three dot on the database and click on create
+      token. Copy the token and insert it into **TURSO_AUTH_TOKEN="<token>"**.
 
-To learn more about Next.js, take a look at the following resources:
+    - **STRIPE_SECRET=""** This variable is gotton for stripe to simulate test online payment. visit [stripe](https://dashboard.stripe.com/test/dashboard) create an account. Then when you log in click on developers. Then go to API Keys and click on reveal test key and copy the value to **STRIPE_SECRET=<Secret Key>**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Starting The App
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+After your environment variable has been setup, install the dependencies by running `npm install` or `pnpm install` depending on the package
+manager you are using. After all dependencies has been installed run `npm run start` to start the app.
 
-## Deploy on Vercel
+### Runing Your database migration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+You have to run database migration to be able to start using the app. Run this commands
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npx drizzle-kit generate`
+- `npx drizzle-kit migrate`
