@@ -22,8 +22,8 @@ export const POST = async (request: NextRequest) => {
       },
     ],
     mode: "payment",
-    success_url: `${"http://127.0.0.1:3000"}?success=true`,
-    cancel_url: `${"http://127.0.0.1:3000"}?success=true`,
+    success_url: `${process.env.BASE_URL}?success=true`,
+    cancel_url: `${process.env.BASE_URL}?success=true`,
   });
   console.log(session);
   return NextResponse.json(session);
