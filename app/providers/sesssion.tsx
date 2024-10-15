@@ -22,6 +22,7 @@ export default function RootLayout({
 
 export const useAuth = () => {
   const sessionCtx = React.useContext(SessionContex);
+  setTimeout(() => {}, 3000);
   if (!sessionCtx.user) {
     throw new Error("Session missing");
   }
