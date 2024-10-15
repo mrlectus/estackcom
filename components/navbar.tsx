@@ -12,6 +12,7 @@ export const NavBar = () => {
           .with("/seller", () => "Dashboard")
           .with("/admin", () => "Dashboard")
           .with("/seller/products", () => "Products")
+          .with("/seller/orders", () => "Orders")
           .with("/admin/manage", () => "Users Management")
           .otherwise(() => null)}
       </div>

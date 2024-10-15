@@ -7,7 +7,8 @@ import { DataTable } from "@/components/table";
 import { columns } from "./columns";
 
 export const OrderTable = () => {
-  const { data, isLoading } = estackApi.useGetUserProductQuery();
+  const { data, isLoading } = estackApi.useGetSellerOrderQuery();
+  console.log("order", data);
   return (
     <div>
       <div>
@@ -16,7 +17,7 @@ export const OrderTable = () => {
             return <Skeleton className="w-[100px] h-[20px] rounded-full" />;
           })
           .with(false, () => {
-            return <DataTable data={data!} columns={columns} />;
+            return <DataTable data={data ? data : []} columns={columns} />;
           })
           .exhaustive()}
       </div>

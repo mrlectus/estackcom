@@ -15,22 +15,22 @@ import { match } from "ts-pattern";
 import { useToast } from "@/hooks/use-toast";
 import { QueryStatus } from "@reduxjs/toolkit/query";
 
-export const ProductMenu = ({ id }: { id: string }) => {
+export const OrderMenu = ({ id }: { id: string }) => {
   const { toast } = useToast();
-  const [deleteProduct, { status }] = estackApi.useDeleteProductByIdMutation();
+  const [shipProduct, { status }] = estackApi.useShipOrderByIdMutation();
   React.useEffect(() => {
     match(status)
       .with(QueryStatus.rejected, () =>
         toast({
           title: "Error",
-          description: "Cannot delete product",
+          description: "Cannot ship product",
           variant: "destructive",
         }),
       )
       .with(QueryStatus.fulfilled, () =>
         toast({
           title: "Success",
-          description: "Product deleted successfully",
+          description: "Product has been marked as shipped",
         }),
       )
       .otherwise(() => null);
@@ -45,8 +45,8 @@ export const ProductMenu = ({ id }: { id: string }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem onClick={() => deleteProduct({ id })}>
-          Delete Product
+        <DropdownMenuItem onClick={() => shipProduct({ id })}>
+          Ship
         </DropdownMenuItem>
         <DropdownMenuSeparator />
       </DropdownMenuContent>

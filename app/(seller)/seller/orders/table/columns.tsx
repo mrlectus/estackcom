@@ -1,8 +1,10 @@
 "use client";
-import { OrderTable, ProductTable } from "@/app/drizzle/schema";
-import { formatCurrency } from "@/lib/utils";
+import { OrderTable } from "@/app/drizzle/schema";
 import { ColumnDef } from "@tanstack/react-table";
-import { ProductMenu } from "./action";
+import { OrderMenu } from "./action";
+import React from "react";
+import { Badge } from "@/components/ui/badge";
+import { match } from "ts-pattern";
 
 export const columns: ColumnDef<OrderTable>[] = [
   {
@@ -19,21 +21,81 @@ export const columns: ColumnDef<OrderTable>[] = [
     header: "Product Name",
   },
   {
-    accessorKey: "price",
-    header: "Price",
+    accessorKey: "quantity",
+    header: "Quantity",
+  },
+  {
+    accessorKey: "paymentStatus",
+    header: "Payment Status",
     cell: ({ row }) => {
-      return <span>{formatCurrency(row.original.price)}</span>;
+      return (
+        <React.Fragment>
+          {match(row.original.paymentStatus)
+            .with("pending", () => (
+              <Badge
+                variant={"secondary"}
+                className="bg-yellow-600 text-white hover:bg-yellow-500"
+              >
+                Pending
+              </Badge>
+            ))
+            .with("paid", () => (
+              <Badge
+                variant={"outline"}
+                className="bg-green-600 text-white hover:bg-green-500"
+              >
+                Paid
+              </Badge>
+            ))
+            .with("declined", () => (
+              <Badge variant={"destructive"}>Declined</Badge>
+            ))
+            .exhaustive()}
+        </React.Fragment>
+      );
     },
   },
   {
-    accessorKey: "stock",
-    header: "Quantity",
+    accessorKey: "shippingStatus",
+    header: "Shipping Status",
+    cell: ({ row }) => {
+      return (
+        <React.Fragment>
+          {match(row.original.shippingStatus)
+            .with("approved", () => (
+              <Badge
+                variant={"secondary"}
+                className="bg-green-700 text-white hover:bg-green-500"
+              >
+                approved
+              </Badge>
+            ))
+            .with("pending", () => (
+              <Badge
+                variant={"outline"}
+                className="bg-yellow-600 text-white hover:bg-yellow-500"
+              >
+                Pending
+              </Badge>
+            ))
+            .with("shipped", () => <Badge variant={"default"}>Shipped</Badge>)
+            .exhaustive()}
+        </React.Fragment>
+      );
+    },
+  },
+  {
+    accessorKey: "orderDate",
+    header: "Order Date",
+    cell: ({ row }) => {
+      return new Date(row.original.orderDate).toLocaleDateString();
+    },
   },
   {
     id: "actions",
     cell: ({ row }) => {
       const id = row.original.id;
-      return <ProductMenu id={id} />;
+      return <OrderMenu id={id} />;
     },
   },
 ];

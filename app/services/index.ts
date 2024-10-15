@@ -1,6 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { User } from "../types/schema";
-import { CartTable, OrderTable, ProductTable, UserTable } from "../drizzle/schema";
+import {
+  CartTable,
+  OrderTable,
+  ProductTable,
+  UserTable,
+} from "../drizzle/schema";
 import { CartInput } from "../api/cart/route";
 import { to } from "await-to-ts";
 import Stripe from "stripe";
@@ -18,7 +23,7 @@ export const pokemonApi = createApi({
 export const estackApi = createApi({
   reducerPath: "estackApi",
   baseQuery: fetchBaseQuery({ baseUrl: "" }),
-  tagTypes: ["Products", "Users", "Carts"],
+  tagTypes: ["Products", "Users", "Carts", "Orders"],
   endpoints: (builder) => ({
     register: builder.mutation<
       { message: string; role: "admin" | "seller" | "shopper" },
@@ -97,14 +102,20 @@ export const estackApi = createApi({
       }),
       providesTags: ["Carts"],
     }),
-    createOrder: builder.mutation<{ message: string }, { address: string; carts: Array<Omit<CartTable, "id" | "key" | "description">>}>({
-        query: (carts) => ({
-          url: "/api/order",
-          method: "POST",
-          body: carts,
-        }),
-        invalidatesTags: ["Carts"],
+    createOrder: builder.mutation<
+      { message: string },
+      {
+        address: string;
+        carts: Array<Omit<CartTable, "id" | "key" | "description">>;
+      }
+    >({
+      query: (carts) => ({
+        url: "/api/order",
+        method: "POST",
+        body: carts,
       }),
+      invalidatesTags: ["Carts"],
+    }),
     deleteCartById: builder.mutation<{ message: string }, { id: string }>({
       query: ({ id }: { id: string }) => ({
         url: `/api/cart/${id}`,
@@ -162,11 +173,21 @@ export const estackApi = createApi({
       query: () => ({
         url: `/api/order/track`,
       }),
+      providesTags: ["Orders"],
     }),
     getSellerOrder: builder.query<Array<OrderTable>, void>({
-          query: () => ({
-            url: `/api/seller/orders`,
-          }),
-        }),
+      query: () => ({
+        url: `/api/seller/orders`,
+      }),
+      providesTags: ["Orders"],
+    }),
+    shipOrderById: builder.mutation<{ message: string }, { id: string }>({
+      query: ({ id }: { id: string }) => ({
+        url: `/api/seller/orders/shipped`,
+        method: "PATCH",
+        body: { id },
+      }),
+      invalidatesTags: ["Orders"],
+    }),
   }),
 });
