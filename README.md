@@ -14,12 +14,12 @@ This project uses some environment variable that we have to setup for the app to
       tab. Then click on create database, and then select Blob (Fast Object storage). And environemnt variable would be provided for you.
       copy it to BLOB_READ_WRITE_TOKEN="<env variable you got>"
 
-    - **TURSO_DATABASE_URL=""** & **TURSO_AUTH_TOKEN=""** This variable is gotton from turso [turso](https://app.turso.tech). Visit the link and
+    - **TURSO_DATABASE_URL=""** & **TURSO_AUTH_TOKEN=""** This variable is gotten from turso [turso](https://app.turso.tech). Visit the link and
       signup to turso. Create a Group and then create a database. after doing that. Go to the database section under group and copy the
       **TURSO_DATABASE_URL**, it looks something like `libsql://<url>.turos.io` Then click on the three dot on the database and click on create
       token. Copy the token and insert it into **TURSO_AUTH_TOKEN="<token>"**.
 
-    - **STRIPE_SECRET=""** This variable is gotton for stripe to simulate test online payment. visit [stripe](https://dashboard.stripe.com/test/dashboard) create an account. Then when you log in click on developers. Then go to API Keys and click on reveal test key and copy the value to **STRIPE_SECRET=<Secret Key>**
+    - **STRIPE_SECRET=""** This variable is gotten for stripe to simulate test online payment. visit [stripe](https://dashboard.stripe.com/test/dashboard) create an account. Then when you log in click on developers. Then go to API Keys and click on reveal test key and copy the value to **STRIPE_SECRET=<Secret Key>**
 
 ### Starting The App
 
