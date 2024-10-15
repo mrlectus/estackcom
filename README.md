@@ -32,6 +32,10 @@ This project uses some environment variable that we have to setup for the app to
 After your environment variable has been setup, install the dependencies by running `npm install` or `pnpm install` depending on the package
 manager you are using. After all dependencies has been installed run `npm run start` to start the app.
 
+## Live deployment
+
+Visit [eStackcom](https://estackcom.onrender.com)
+
 ### Runing Your database migration
 
 You have to run database migration to be able to start using the app. Run this commands
