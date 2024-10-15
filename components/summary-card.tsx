@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { LoaderCircle } from "lucide-react";
 import { match } from "ts-pattern";
 import { QueryStatus } from "@reduxjs/toolkit/query";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -66,7 +66,7 @@ export const SummaryCard = () => {
       })
       .otherwise(() => null);
   }, [status, data]);
-    return (
+  return (
     <div>
       <div className="p-1 my-2">
         <div className="flex justify-between">
